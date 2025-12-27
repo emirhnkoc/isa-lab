@@ -33,7 +33,7 @@ const AtmosphereChart = ({ currentAltitude, isaDeviation, units = 'imperial' }) 
                 tempActualF: actual.tempF,
                 pressureActual: actual.pressureInHg,
                 pressureActualHPa: actual.pressureHPa,
-                densityActual: actual.densityRatio,
+                densityActual: actual.densityKgM3,
             });
         }
         return points;
@@ -58,7 +58,7 @@ const AtmosphereChart = ({ currentAltitude, isaDeviation, units = 'imperial' }) 
                         Pressure: {units === 'metric' ? `${altData?.pressureActualHPa} hPa` : `${altData?.pressureActual} inHg`}
                     </p>
                     <p className="text-emerald-400">
-                        Density: {altData?.densityActual}%
+                        Density: {altData?.densityActual} kg/m³
                     </p>
                 </div>
             );
@@ -96,7 +96,7 @@ const AtmosphereChart = ({ currentAltitude, isaDeviation, units = 'imperial' }) 
                 <ComposedChart
                     layout="vertical"
                     data={data}
-                    margin={{ top: 60, right: 30, left: 20, bottom: 60 }}
+                    margin={{ top: 60, right: 40, left: 20, bottom: 60 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.3} />
 
@@ -194,12 +194,12 @@ const AtmosphereChart = ({ currentAltitude, isaDeviation, units = 'imperial' }) 
                         strokeDasharray="4 4"
                         strokeWidth={2}
                         label={{
-                            position: 'right',
+                            position: 'insideBottomRight',
                             value: '✈ YOU',
                             fill: '#ef4444',
                             fontSize: 12,
                             fontWeight: 'bold',
-                            offset: 10
+                            offset: 15
                         }}
                     />
 
