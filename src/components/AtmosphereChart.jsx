@@ -166,7 +166,7 @@ const AtmosphereChart = ({ currentAltitude, isaDeviation, units = 'imperial' }) 
                                     const labels = {
                                         'tempStd': `Standard Temperature`,
                                         'tempActual': `Actual Temperature`,
-                                        'pressureActual': `Atmospheric Pressure`
+                                        'pressureActual': `Pressure`
                                     };
                                     return (
                                         <div key={`item-${index}`} className="flex items-center gap-2" style={{ color: entry.color }}>
@@ -213,10 +213,10 @@ const AtmosphereChart = ({ currentAltitude, isaDeviation, units = 'imperial' }) 
                         strokeDasharray="5 5"
                         dot={false}
                         name="tempStd"
-                        animationDuration={0}
+                        isAnimationActive={false}
                     />
 
-                    {/* Actual Temp - Solid Orange */}
+                    {/* Actual Temp - Solid Orange - INSTANT UPDATE */}
                     <Line
                         dataKey={units === 'metric' ? 'tempActual' : 'tempActualF'}
                         xAxisId="temp"
@@ -225,10 +225,10 @@ const AtmosphereChart = ({ currentAltitude, isaDeviation, units = 'imperial' }) 
                         strokeWidth={3}
                         dot={false}
                         name="tempActual"
-                        animationDuration={0}
+                        isAnimationActive={false}
                     />
 
-                    {/* Pressure - Solid Cyan */}
+                    {/* Pressure - Solid Cyan - INSTANT UPDATE */}
                     <Line
                         dataKey={units === 'metric' ? 'pressureActualHPa' : 'pressureActual'}
                         xAxisId="pressure"
@@ -237,7 +237,7 @@ const AtmosphereChart = ({ currentAltitude, isaDeviation, units = 'imperial' }) 
                         strokeWidth={2}
                         dot={false}
                         name="pressureActual"
-                        animationDuration={0}
+                        isAnimationActive={false}
                     />
 
                 </ComposedChart>

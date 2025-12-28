@@ -141,8 +141,7 @@ function App() {
                                     <LayoutDashboard className="w-3 h-3 lg:w-4 lg:h-4 text-slate-400" />
                                 </div>
                                 <div>
-                                    <h2 className="text-[10px] lg:text-xs font-bold text-slate-200 uppercase tracking-[0.15em] lg:tracking-[0.2em] leading-none">Atmosphere Profile</h2>
-                                    <p className="hidden sm:block text-[9px] lg:text-[10px] text-slate-500 mt-1 font-bold uppercase tracking-wider">Lapse Rate & Pressure Gradient</p>
+                                    <h2 className="text-[10px] lg:text-xs font-bold text-slate-200 uppercase tracking-[0.15em] lg:tracking-[0.2em] leading-none">Graph</h2>
                                 </div>
                             </div>
                             <div className="hidden sm:flex gap-4">
