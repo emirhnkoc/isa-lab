@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Thermometer, Wind, X, RotateCcw } from 'lucide-react';
+import { Thermometer, Wind, X, RotateCcw } from 'lucide-react';
 
 const InputPanel = ({
     altitude,
@@ -9,9 +9,9 @@ const InputPanel = ({
     units,
     setUnits,
     onClose,
-    isMobile
+    isMobile,
+    onReset
 }) => {
-    const [showConfig, setShowConfig] = useState(false);
     const [manualAltitude, setManualAltitude] = useState('');
 
     const ftToM = (ft) => Math.round(ft * 0.3048);
@@ -36,11 +36,6 @@ const InputPanel = ({
     const handleSliderChange = (e) => {
         const val = Number(e.target.value);
         setAltitude(val);
-    };
-
-    const handleReset = () => {
-        setAltitude(0);
-        setIsaDeviation(0);
     };
 
     const handleIsaReset = () => {
@@ -176,76 +171,28 @@ const InputPanel = ({
                 </div>
             </div>
 
-            {/* Footer */}
-            <div className="pt-3 lg:pt-4 border-t border-slate-800 flex items-center justify-between">
+            {/* Unit Toggle */}
+            <div className="flex items-center justify-between bg-slate-800/40 p-3 lg:p-4 rounded-xl border border-slate-700/60">
+                <span className={`text-[10px] font-bold uppercase tracking-widest transition-all ${units === 'imperial' ? 'text-blue-400' : 'text-slate-600'}`}>Imperial</span>
                 <button
-                    onClick={() => setShowConfig(true)}
-                    className="flex items-center gap-2 text-slate-500 hover:text-white transition-all text-[10px] lg:text-[11px] font-bold uppercase tracking-wider group"
+                    onClick={() => setUnits(units === 'metric' ? 'imperial' : 'metric')}
+                    className="relative w-12 h-6 bg-slate-800 rounded-full border border-slate-700 p-0.5 transition-all hover:border-slate-500 group"
                 >
-                    <Settings className="w-4 h-4 transition-transform group-hover:rotate-90" />
-                    <span>Config</span>
+                    <div className={`w-5 h-5 bg-blue-600 rounded-full shadow-lg shadow-blue-600/40 transition-all duration-300 transform ${units === 'metric' ? 'translate-x-6' : 'translate-x-0'} group-hover:scale-110`} />
                 </button>
-                <button
-                    onClick={handleReset}
-                    className="flex items-center gap-1.5 text-slate-600 hover:text-red-400 transition-all text-[10px] lg:text-[11px] font-bold uppercase tracking-wider"
-                >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                    <span>Reset</span>
-                </button>
+                <span className={`text-[10px] font-bold uppercase tracking-widest transition-all ${units === 'metric' ? 'text-blue-400' : 'text-slate-600'}`}>Metric</span>
             </div>
 
-            {/* Config Modal */}
-            {showConfig && (
-                <div className="absolute inset-0 bg-slate-900/98 backdrop-blur-md z-50 p-4 lg:p-6 flex flex-col gap-4 lg:gap-6 animate-fade-in rounded-r-2xl border-r border-slate-700 overflow-y-auto">
-                    <div className="flex justify-between items-center border-b border-slate-800 pb-4">
-                        <div className="flex items-center gap-2">
-                            <Settings className="w-4 h-4 text-blue-500" />
-                            <h2 className="font-bold text-sm uppercase tracking-widest text-slate-200">Settings</h2>
-                        </div>
-                        <button onClick={() => setShowConfig(false)} className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-500 hover:text-white transition-all">
-                            <X className="w-5 h-5" />
-                        </button>
-                    </div>
-
-                    <div className="space-y-4 lg:space-y-6">
-                        <section className="space-y-3">
-                            <label className="text-[10px] font-bold text-blue-500 uppercase tracking-[0.2em]">Measurement Units</label>
-                            <div className="flex items-center justify-between bg-slate-950/50 p-2.5 rounded-xl border border-slate-800 shadow-inner">
-                                <span className={`text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${units === 'imperial' ? 'text-blue-400' : 'text-slate-600'}`}>Imperial</span>
-                                <button
-                                    onClick={() => setUnits(units === 'metric' ? 'imperial' : 'metric')}
-                                    className="relative w-14 h-7 bg-slate-800 rounded-full border border-slate-700 p-1 transition-all hover:border-slate-500 group"
-                                >
-                                    <div className={`absolute inset-1 w-5 h-5 bg-blue-600 rounded-full shadow-lg shadow-blue-600/40 transition-all duration-300 transform ${units === 'metric' ? 'translate-x-7' : 'translate-x-0'} group-hover:scale-110`} />
-                                </button>
-                                <span className={`text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${units === 'metric' ? 'text-blue-400' : 'text-slate-600'}`}>Metric</span>
-                            </div>
-                        </section>
-
-                        <section className="space-y-3">
-                            <label className="text-[10px] font-bold text-sky-500 uppercase tracking-[0.2em]">Altitude Presets</label>
-                            <div className="grid grid-cols-2 gap-2">
-                                {[
-                                    { l: 'Sea Level', v: 0 },
-                                    { l: 'FL100', v: 10000 },
-                                    { l: 'FL250', v: 25000 },
-                                    { l: 'FL350', v: 35000 },
-                                    { l: 'FL410', v: 41000 },
-                                    { l: 'FL510', v: 51000 },
-                                ].map(p => (
-                                    <button
-                                        key={p.v}
-                                        onClick={() => setAltitude(p.v)}
-                                        className="py-2 lg:py-2.5 bg-slate-800/50 border border-slate-700/50 rounded-xl text-[10px] font-bold hover:bg-slate-700 hover:border-blue-500/50 transition-all text-slate-400 hover:text-white"
-                                    >
-                                        {p.l}
-                                    </button>
-                                ))}
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            )}
+            {/* Footer - Reset Only */}
+            <div className="pt-3 lg:pt-4 border-t border-slate-800 flex items-center justify-center">
+                <button
+                    onClick={onReset}
+                    className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 border border-slate-700/50 rounded-lg text-slate-500 hover:text-red-400 hover:border-red-500/30 transition-all text-[10px] lg:text-[11px] font-bold uppercase tracking-wider"
+                >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>Reset All</span>
+                </button>
+            </div>
         </div>
     );
 };

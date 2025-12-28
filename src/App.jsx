@@ -11,6 +11,11 @@ function App() {
     const [units, setUnits] = useState('metric');
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    // Chart visibility toggles
+    const [showTemp, setShowTemp] = useState(true);
+    const [showPressure, setShowPressure] = useState(true);
+    const [showDensity, setShowDensity] = useState(true);
+
     const metrics = useMemo(() => calculateISA(altitude, isaDeviation), [altitude, isaDeviation]);
 
     const daDiff = metrics.densityAltitude - altitude;
@@ -21,6 +26,15 @@ function App() {
 
     const displayAlt = units === 'metric' ? `${ftToM(altitude).toLocaleString()} m` : `${altitude.toLocaleString()} ft`;
     const displayFL = `FL${Math.round(altitude / 100).toString().padStart(3, '0')}`;
+
+    // Global reset function
+    const handleGlobalReset = () => {
+        setAltitude(0);
+        setIsaDeviation(0);
+        setShowTemp(true);
+        setShowPressure(true);
+        setShowDensity(true);
+    };
 
     return (
         <div className="flex flex-col lg:flex-row h-screen w-screen overflow-hidden bg-[#0a0f18] text-slate-100 font-sans selection:bg-blue-500/30">
@@ -71,6 +85,7 @@ function App() {
                     setUnits={setUnits}
                     onClose={() => setMobileMenuOpen(false)}
                     isMobile={mobileMenuOpen}
+                    onReset={handleGlobalReset}
                 />
             </div>
 
@@ -144,19 +159,39 @@ function App() {
                                     <h2 className="text-[10px] lg:text-xs font-bold text-slate-200 uppercase tracking-[0.15em] lg:tracking-[0.2em] leading-none">Graph</h2>
                                 </div>
                             </div>
-                            <div className="hidden sm:flex gap-4">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.4)]" />
-                                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Temperature</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-sky-500 shadow-[0_0_8px_rgba(56,189,248,0.4)]" />
-                                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Pressure</span>
-                                </div>
+                            <div className="flex items-center gap-1 sm:gap-3">
+                                <button
+                                    onClick={() => setShowTemp(!showTemp)}
+                                    className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${showTemp ? 'opacity-100 bg-slate-800/50' : 'opacity-40 hover:opacity-70'}`}
+                                >
+                                    <div className={`w-2 h-2 rounded-full bg-orange-500 ${showTemp ? 'shadow-[0_0_8px_rgba(249,115,22,0.4)]' : ''}`} />
+                                    <span className="text-[9px] sm:text-[10px] font-bold text-orange-400 uppercase tracking-wider">Temp</span>
+                                </button>
+                                <button
+                                    onClick={() => setShowPressure(!showPressure)}
+                                    className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${showPressure ? 'opacity-100 bg-slate-800/50' : 'opacity-40 hover:opacity-70'}`}
+                                >
+                                    <div className={`w-2 h-2 rounded-full bg-sky-500 ${showPressure ? 'shadow-[0_0_8px_rgba(56,189,248,0.4)]' : ''}`} />
+                                    <span className="text-[9px] sm:text-[10px] font-bold text-sky-400 uppercase tracking-wider">Pressure</span>
+                                </button>
+                                <button
+                                    onClick={() => setShowDensity(!showDensity)}
+                                    className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${showDensity ? 'opacity-100 bg-slate-800/50' : 'opacity-40 hover:opacity-70'}`}
+                                >
+                                    <div className={`w-2 h-2 rounded-full bg-emerald-500 ${showDensity ? 'shadow-[0_0_8px_rgba(16,185,129,0.4)]' : ''}`} />
+                                    <span className="text-[9px] sm:text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Density</span>
+                                </button>
                             </div>
                         </div>
                         <div className="flex-1 relative">
-                            <AtmosphereChart currentAltitude={altitude} isaDeviation={isaDeviation} units={units} />
+                            <AtmosphereChart
+                                currentAltitude={altitude}
+                                isaDeviation={isaDeviation}
+                                units={units}
+                                showTemp={showTemp}
+                                showPressure={showPressure}
+                                showDensity={showDensity}
+                            />
                         </div>
                     </div>
 
