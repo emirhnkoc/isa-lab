@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Thermometer, Wind, X, RotateCcw } from 'lucide-react';
+import { Thermometer, Wind, RotateCcw } from 'lucide-react';
 
 const InputPanel = ({
     altitude,
@@ -8,8 +8,6 @@ const InputPanel = ({
     setIsaDeviation,
     units,
     setUnits,
-    onClose,
-    isMobile,
     onReset
 }) => {
     const [manualAltitude, setManualAltitude] = useState('');
@@ -48,7 +46,7 @@ const InputPanel = ({
         <div className="h-full bg-slate-900 border-r border-slate-700 p-4 lg:p-6 flex flex-col gap-4 lg:gap-6 text-slate-100 shadow-2xl z-20 w-72 lg:w-80 relative shrink-0 overflow-y-auto">
 
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-700 pb-4">
+            <div className="flex items-center border-b border-slate-700 pb-4">
                 <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-600 rounded-lg shadow-lg shadow-blue-600/20">
                         <Wind className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
@@ -58,15 +56,6 @@ const InputPanel = ({
                         <p className="text-[9px] lg:text-[10px] text-slate-500 font-bold tracking-tighter uppercase mt-1">Atmosphere Analyzer</p>
                     </div>
                 </div>
-                {/* Close button for mobile */}
-                {isMobile && (
-                    <button
-                        onClick={onClose}
-                        className="lg:hidden p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-all"
-                    >
-                        <X className="w-5 h-5" />
-                    </button>
-                )}
             </div>
 
             {/* Altitude Control */}
